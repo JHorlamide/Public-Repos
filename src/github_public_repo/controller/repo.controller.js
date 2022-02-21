@@ -1,13 +1,19 @@
 const axios = require('axios')
 
-const makeSearch = async (apiParams) => {
+// Make a request to the GitHub API and return the list
+// of repos that matches the search parameters.
+const makeSearch = async ({
+  searchQuery,
+  currentPage,
+  itemPerPage,
+  sortField,
+  sortOrder,
+}) => {
   const GITHUB_API_TOKEN = process.env.GITHUB_API_TOKEN
   const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
   const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
 
-  // console.log('From makeSearchFunc: ', apiParams)
-
-  const url = `https://api.github.com/search/code?q=${apiParams.searchQuery}+in:file&page=${apiParams.currentPage}&per_page=${apiParams.itemPerPage}&sort=${apiParams.sortField}&order=${apiParams.sortOrder}&client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}`
+  const url = `https://api.github.com/search/code?q=${searchQuery}+in:file&page=${currentPage}&per_page=${itemPerPage}&sort=${sortField}&order=${sortOrder}&client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}`
 
   const config = {
     headers: {
@@ -18,6 +24,11 @@ const makeSearch = async (apiParams) => {
   return await axios.get(url, config)
 }
 
+/***
+ * @router  GET: api/get-repos/:searchQuery/:sortField/:sortOrder/:itemPerPage/:currentPage
+ * @desc    Get github repos that matches search parameters.
+ * @access  ACCESS_TYPE(Public || Private).
+ * ***/
 exports.getRepos = async (req, res) => {
   const requestParams = {
     searchQuery: req.params.searchQuery,

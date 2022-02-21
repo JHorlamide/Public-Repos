@@ -5,8 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon app.js",
-    "test": "mocha --recursive ./src/test/*.js --timeout 10000"
+    "test": "mocha --recursive ./src/test/*.js"
   },
+
+  "engines": {
+    "node": ">= 14 > 16"
+  },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
